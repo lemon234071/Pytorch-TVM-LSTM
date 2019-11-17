@@ -6,11 +6,10 @@ import numpy as np
 import tvm.relay as relay
 from PIL import Image
 
-from pytorch-mobilenet-v2.MobileNetv2 import mobilenetv2
+from models.MobileNetV2 import mobilenet_v2
 
-model = mobilenetv2(pretrained=True)
+model = mobilenet_v2(pretrained=True)
 example = torch.rand(1, 3, 224, 224)  # 假想输入
-
 torch_out = torch.onnx.export(model,
                               example,
                               "mobilenetv2.onnx",
@@ -31,9 +30,10 @@ def transform_image(image):  # 定义转化函数，将PIL格式的图像转化�
     image = image[np.newaxis, :].astype('float32')
     return image
 
-
+print(1)
 img = Image.open('./datasets/images/plane.jpg').resize((224, 224))  # 这里我们将图像resize为特定大小
 x = transform_image(img)
+print(2)
 
 target = 'llvm'
 
@@ -42,11 +42,16 @@ shape_dict = {input_name: x.shape}
 # 利用Relay中的onnx前端读取我们导出的onnx模型
 sym, params = relay.frontend.from_onnx(onnx_model, shape_dict)
 
+print(3)
 with relay.build_config(opt_level=3):
     intrp = relay.build_module.create_executor('graph', sym, tvm.cpu(0), target)
 
+print(4)
 dtype = 'float32'
 func = intrp.evaluate(sym)
 
+print(5)
 output = func(tvm.nd.array(x.astype(dtype)), **params).asnumpy()
+print(6)
 print(output.argmax())
+print(7)
