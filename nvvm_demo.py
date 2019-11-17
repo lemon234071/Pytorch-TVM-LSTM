@@ -35,18 +35,19 @@ def main():
         return image
 
     print(1)
-    img = Image.open('./datasets/images/plane.jpg').resize((224, 224))  # 这里我们将图像resize为特定大小
+    img = Image.open('./datasets/images/plane.jpg').resize((224, 224))
     x = transform_image(img)
     # img = np.array(img).transpose((2, 0, 1)).astype('float32')
     # img = img / 255.0  # remember pytorch tensor is 0-1
     # x = img[np.newaxis, :]
+    x = np.ones(1, 3, 224, 224)
     print(2)
     import pdb
     pdb.set_trace()
 
     target = 'llvm'
 
-    input_name = '0'  # 注意这里为之前导出onnx模型中的模型的输入id，这里为0
+    input_name = '0'  # 这里为之前导出onnx模型中的模型的输入id，这里为0
     shape_dict = {input_name: x.shape}
     # 利用Relay中的onnx前端读取我们导出的onnx模型
     sym, params = relay.frontend.from_onnx(onnx_model, shape_dict)
