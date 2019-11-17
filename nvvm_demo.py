@@ -40,7 +40,14 @@ def main():
     # img = np.array(img).transpose((2, 0, 1)).astype('float32')
     # img = img / 255.0  # remember pytorch tensor is 0-1
     # x = img[np.newaxis, :]
-    x = np.ones(1, 3, 224, 224)
+    x = np.ones([1, 3, 224, 224])
+    from tvm.contrib.download import download_testdata
+    img_url = 'https://github.com/dmlc/mxnet.js/blob/master/data/cat.png?raw=true'
+    img_path = download_testdata(img_url, 'cat.png', module='data')
+    img = Image.open(img_path).resize((224, 224))
+    img_ycbcr = img.convert("YCbCr")  # convert to YCbCr
+    img_y, img_cb, img_cr = img_ycbcr.split()
+    x = np.array(img_y)[np.newaxis, np.newaxis, :, :]
     print(2)
     import pdb
     pdb.set_trace()
