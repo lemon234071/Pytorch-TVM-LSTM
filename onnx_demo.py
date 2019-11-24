@@ -49,8 +49,6 @@ def main():
     img_y, img_cb, img_cr = img_ycbcr.split()
     x = np.array(img_y)[np.newaxis, np.newaxis, :, :]
     print(2)
-    import pdb
-    pdb.set_trace()
 
     target = 'llvm'
 
