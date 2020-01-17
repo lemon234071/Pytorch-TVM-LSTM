@@ -8,7 +8,6 @@ import tvm.relay as relay
 from tvm.contrib import graph_runtime
 from PIL import Image
 
-from models.MobileNetV2 import mobilenet_v2
 
 
 def main():
