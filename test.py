@@ -33,7 +33,7 @@ def test():
 
 
 def main():
-    model = onnx.load("alexnet.onnx")
+    model = onnx.load("lstm.onnx")
     relay.frontend.from_onnx(model, {'input.1': (28, 128, 28)})
     print(1)
 

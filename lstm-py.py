@@ -113,7 +113,7 @@ def main():
                       "lstm.onnx", verbose=True)
                       # opset_version=10,
                       # do_constant_folding=True,  # 是否执行常量折叠优化
-                      # input_names=["input"],  # 输入名
+                      # input_names=["inputs"],  # 输入名
                       # output_names=["output"],  # 输出名
                       # dynamic_axes={"input": {0: "batch_size"},  # 批处理变量
                       #               "output": {0: "batch_size"}})
