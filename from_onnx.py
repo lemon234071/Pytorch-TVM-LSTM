@@ -50,7 +50,7 @@ from tvm.contrib.download import download_testdata
 #                      'super_resolution_0.2.onnx'])
 # model_path = download_testdata(model_url, 'super_resolution.onnx', module='onnx')
 # now you have super_resolution.onnx on disk
-onnx_model = onnx.load("super_resolution.onnx")
+onnx_model = onnx.load("lstm.onnx")
 
 ######################################################################
 # Load a test image

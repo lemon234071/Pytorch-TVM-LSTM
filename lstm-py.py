@@ -4,6 +4,7 @@ from torch.autograd import Variable
 import torch.nn.functional as F
 from torchvision import datasets, transforms
 import torch.optim as optim
+import onnx
 
 from argparse import ArgumentParser
 from tqdm import tqdm
@@ -46,7 +47,7 @@ def get_dataloader(args):
 def main():
     parser = ArgumentParser()
     parser.add_argument("--batch_size", type=int, default=128, help="")
-    parser.add_argument("--epochs", type=int, default=10, help="")
+    parser.add_argument("--epochs", type=int, default=1, help="")
     parser.add_argument("--lr", type=float, default=0.001, help="")
     parser.add_argument("--report", type=int, default=100, help="")
 
@@ -102,6 +103,20 @@ def main():
                 valid_size += inputs.shape[1]
             print("valid Loss= " + "{:.4f}".format(valid_loss/step) +
                   ", valid Accuracy= " + "{:.3f}".format(valid_acc/valid_size))
+
+    torch.save(model, "./lstm.pt")
+    model = torch.load("./lstm.pt")
+    model.eval()
+    inputs = Variable(torch.randn(28, 128, 28))
+    torch.onnx.export(model,
+                      inputs,
+                      "lstm.onnx", verbose=True)
+                      # opset_version=10,
+                      # do_constant_folding=True,  # 是否执行常量折叠优化
+                      # input_names=["input"],  # 输入名
+                      # output_names=["output"],  # 输出名
+                      # dynamic_axes={"input": {0: "batch_size"},  # 批处理变量
+                      #               "output": {0: "batch_size"}})
 
 
 if __name__ == '__main__':
