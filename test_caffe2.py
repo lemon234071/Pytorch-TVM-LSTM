@@ -20,6 +20,7 @@ def main():
                                   )
 
     onnx_model = onnx.load('model.onnx')
+    sym, params = relay.frontend.from_onnx(onnx_model, [1, 3, 224, 224])
     import pdb
     pdb.set_trace()
     #prepared_backend = caffe2.python.onnx.backend.prepare(model)
